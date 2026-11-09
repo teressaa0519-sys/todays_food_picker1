@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今天吃什麼？</title>
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  font-family: "Microsoft JhengHei", sans-serif;
+  background: linear-gradient(135deg, #fff3e8, #ffe2d2);
+}
+
+.container {
+  width: min(100%, 560px);
+  padding: 32px;
+  border-radius: 24px;
+  background: white;
+  box-shadow: 0 12px 36px #784b2d22;
+}
+
+h1 {
+  text-align: center;
+  color: #d66b3d;
+}
+
+.intro {
+  text-align: center;
+  color: #777;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 14px;
+  border: 2px solid #f0d5c7;
+  border-radius: 12px;
+  font: inherit;
+  line-height: 1.7;
+}
+
+button {
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #e47c50;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #cf663c;
+}
+
+.result-box {
+  margin-top: 24px;
+  padding: 22px;
+  min-height: 125px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border: 2px dashed #efb99f;
+  border-radius: 16px;
+  background: #fff8f3;
+}
+
+.result-label { color: #888; }
+
+#result {
+  margin-top: 8px;
+  color: #c75d32;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+#message {
+  text-align: center;
+  color: #c0392b;
+}
+
+</style>
+</head>
+
+<body>
+<main class="container">
+
+<h1>今天吃什麼？</h1>
+<p class="intro">選擇困難嗎？讓抽籤器幫你決定！</p>
+
+<label for="options">
+輸入想吃的選項（每行一個）
+</label>
+
+<textarea id="options">便當
+麵
+咖哩
+水餃</textarea>
+
+<button id="drawButton">幫我選！</button>
+
+<section class="result-box" aria-live="polite">
+  <div>
+    <div class="result-label">今天就決定吃這個！</div>
+    <div id="result">等你來抽籤</div>
+  </div>
+</section>
+
+<p id="message"></p>
+
+</main>
+
+<script>
+const optionsInput = document.getElementById("options");
+const drawButton = document.getElementById("drawButton");
+const result = document.getElementById("result");
+const message = document.getElementById("message");
+
+drawButton.addEventListener("click", function () {
+
+  // 清除空白行及重複選項
+  const options = [...new Set(
+    optionsInput.value
+      .split("\n")
+      .map(option => option.trim())
+      .filter(option => option.length > 0)
+  )];
+
+  // 檢查清單是否為空
+  if (options.length === 0) {
+    result.textContent = "尚未抽出";
+    message.textContent = "請先輸入至少一個選項";
+    return;
+  }
+
+  // 隨機抽出一個選項
+  const randomIndex = Math.floor(
+    Math.random() * options.length
+  );
+
+  result.textContent = options[randomIndex];
+  message.textContent = "";
+
+});
+</script>
+
+</body>
+</html>
